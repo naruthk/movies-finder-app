@@ -1,31 +1,13 @@
 import React from 'react'
 import moment from 'moment'
 
-import {
-  Container,
-  Grid,
-  Header,
-  Segment,
-} from 'semantic-ui-react'
+import { Container, Grid, Header, Segment } from 'semantic-ui-react'
 
-import CurrentlyInTheatersUnit from '../CurrentlyInTheatersUnit'
+import MoviesAsGridUnit from '../Unit'
 
-class CurrentlyInTheatersSection extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      loadLimit: 5
-    }
-  }
-  
-  handleClick = (e) => {
-    const { loadLimit } = this.state
-    this.setState({ loadLimit: loadLimit + 5 })
-  }
+export default class MoviesAsGridSection extends React.Component {
   
   render() {
-
     const results = this.props.content
     
     return (
@@ -34,20 +16,19 @@ class CurrentlyInTheatersSection extends React.Component {
         <Container style={{ padding: '3em' }}>
           <Header
             as='h2'
-            content='Currently in Theaters'
-            subheader={`Movies currently on show this week`}
+            content={this.props.title}
+            subheader={this.props.subtitle}
           />
         </Container>
 
         <Segment vertical style={{ padding: '2em 0'}}>
 
           <Grid doubling columns={5}>
-
             {results.map((movie, index) => {
               const title = movie.original_title ? movie.original_title : movie.original_name
               const date = movie.release_date ? movie.release_date : movie.first_air_date
               return (
-                <CurrentlyInTheatersUnit
+                <MoviesAsGridUnit
                   key={index + `-item`}
                   id={movie.id}
                   imgUrl={movie.poster_path}
@@ -65,5 +46,3 @@ class CurrentlyInTheatersSection extends React.Component {
     )
   }
 }
-
-export default CurrentlyInTheatersSection

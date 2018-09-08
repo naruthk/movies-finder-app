@@ -2,26 +2,17 @@ import React, { Component } from 'react'
 import { Helmet } from 'react-helmet'
 import axios from 'axios'
 
+import { Container, Header, Responsive, Segment, Modal, Grid, Button, Embed } from 'semantic-ui-react'
+
 import Config from '../utils/app.config'
-
-import {
-  Container,
-  Header,
-  Responsive,
-  Segment,
-  List,
-  Image,
-  Grid,
-} from 'semantic-ui-react'
-
-import ExternalLinkButton from '../components/Buttons/ExternalLinkButton'
+import { siteTitle } from '../utils'
 
 import TemplateHeader from '../components/Header'
 import TemplateFooter from '../components/Footer'
-import OverallDetailsSection from '../components/Details/OverallDetailsSection'
 
-import { siteTitle } from '../utils'
-import blankPhoto from '../assets/images/white-image.png'
+import MovieOverviewSection from '../components/Movies/Overview'
+import MovieCastSection from '../components/Movies/Cast'
+import MovieCrewSection from '../components/Movies/Crew'
 
 export default class Details extends Component {
 
@@ -42,7 +33,8 @@ export default class Details extends Component {
       vote_average: '',
       vote_count: '',
       cast: [],
-      crew: []
+      crew: [],
+      videos: []
     }
   }
   
@@ -56,7 +48,7 @@ export default class Details extends Component {
         const movieDetails = res.data
         const genres = movieDetails.genres.map(genre => genre.name);
 
-        this.setState({ 
+        this.setState({
           imdb_id: movieDetails.imdb_id,
           title: movieDetails.title,
           overview: movieDetails.overview,
@@ -84,11 +76,18 @@ export default class Details extends Component {
       }
     );
 
+    // Get videos from The Movie Database
+    axios.get(`${tmdb_default_uri}/movie/${movieId}/videos?api_key=${tmdb_api_key}&language=en-US`)
+      .then(res => {
+        const videos = res.data.results
+        this.setState({ 
+          videos: videos
+        })
+      }
+    );
   }
   
   render() {
-
-    const { tmdb_image_uri } = Config
 
     return (
       <Responsive>
@@ -98,29 +97,20 @@ export default class Details extends Component {
             <title>{this.state.title} | {siteTitle}</title>
         </Helmet>
 
-        <TemplateHeader style={{background: '#000'}}>
-
-          <Segment
-            style={{ padding: '1em 0em' }}
-            inverted
-            basic
-          >
+        <TemplateHeader>
+          <Segment inverted basic>
             <Container>
-              <Header
+              <Header inverted
                 as='h1'
                 content={this.state.title}
-                inverted
                 style={{
                   fontSize: '4em',
                   fontWeight: 'normal',
                   margin: '1.5em 0 0.5em 0em'
                 }}
               />
-              
             </Container>
-          
           </Segment>
-
         </TemplateHeader>
 
         <Container>
@@ -134,82 +124,28 @@ export default class Details extends Component {
                     <Header
                       as='h2'
                       content='Overview'
-                      subheader={`Get all the details about ${this.state.title}`}
-                    />
+                      subheader={`Get all the details about ${this.state.title}`} />
                     </Grid.Column>
                     <Grid.Column textAlign='right'>
-                      <ExternalLinkButton url={`https://www.imdb.com/${this.state.imdb_id}`} text={`More on IMDB`} icon='imdb' />
+                      {this.state.videos.length > 0 && (
+                        <Modal trigger={<Button>Play Trailer</Button>} closeIcon basic>
+                          <Modal.Header>{this.state.title} - Trailer</Modal.Header>
+                          <Modal.Content>
+                            <Embed id={this.state.videos[0].key}  placeholder={`https://img.youtube.com/vi/${this.state.videos[0].key}/0.jpg`} source='youtube' />
+                          </Modal.Content>
+                        </Modal>
+                      )}
                     </Grid.Column>
                   </Grid.Row>
                 </Grid>
               
-                <OverallDetailsSection content={this.state} />
+                <MovieOverviewSection content={this.state} />
 
-                <Header
-                  as='h2'
-                  content='Cast'
-                />
+                <Header as='h2' content='Cast' />
+                <MovieCastSection cast={this.state.cast} />
 
-                <Grid>
-                  {this.state.cast.map((person, index) => {
-                      return (
-                        <Grid.Column textAlign='center' mobile={4} tablet={4} computer={4}>
-                          <List>
-                            <List.Item>
-                              {person.profile_path && <Image rounded src={`${tmdb_image_uri}/${person.profile_path}`} />}
-                              {/* {!person.profile_path && <Image rounded src={blankPhoto} />} */}
-                              <List.Content style={{margin: '10px 0 0 0'}}>
-                                <List.Header>{person.name}</List.Header>
-                                <List.Description>
-                                  as {person.character}
-                                </List.Description>
-                              </List.Content>
-                            </List.Item>
-                          </List>
-                        </Grid.Column>
-                      )
-                    })}
-                </Grid>
-
-                <Header
-                  as='h2'
-                  content='Crew'
-                />
-
-                <Grid>
-                  <Grid.Column width={8}>
-                    {this.state.crew.slice(0, this.state.crew.length / 2).map((person) => {
-                      return (
-                        <List>
-                          <List.Item>
-                            <List.Content style={{margin: '10px 0 0 0'}}>
-                              <List.Header>{person.name}</List.Header>
-                              <List.Description>
-                                {person.job}
-                              </List.Description>
-                            </List.Content>
-                          </List.Item>
-                        </List>
-                      )
-                    })}
-                  </Grid.Column>
-                  <Grid.Column width={8}>
-                    {this.state.crew.slice(this.state.crew.length / 2).map((person) => {
-                      return (
-                        <List>
-                          <List.Item>
-                            <List.Content style={{margin: '10px 0 0 0'}}>
-                              <List.Header>{person.name}</List.Header>
-                              <List.Description>
-                                {person.job}
-                              </List.Description>
-                            </List.Content>
-                          </List.Item>
-                        </List>
-                      )
-                    })}
-                  </Grid.Column>
-                </Grid>
+                <Header as='h2' content='Crew' />
+                <MovieCrewSection crew={this.state.crew} />
 
               </Grid.Column>
 

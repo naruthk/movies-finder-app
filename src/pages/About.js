@@ -1,14 +1,6 @@
 import React, { Component } from 'react'
 import { Helmet } from 'react-helmet'
-import {
-  Container,
-  Divider,
-  Header,
-  Image,
-  List,
-  Responsive,
-  Segment,
-} from 'semantic-ui-react'
+import { Container, Divider, Header, Image, List, Responsive, Segment } from 'semantic-ui-react'
 
 import TemplateHeader from '../components/Header'
 import TemplateFooter from '../components/Footer'
@@ -17,9 +9,17 @@ import { siteTitle } from '../utils'
 
 import jenny from '../assets/images/jenny.jpg';
 
-class About extends Component {
-  
+export default class About extends Component {
+
   render() {
+
+    const featuresObj = {
+      'Easy Content Lookup' : 'Designed to make searching for your favorite content easier than ever', 
+      'Multiple Sources' : 'Search for movies and shows from The Movie Database (TMDb), Twitter, YouTube, and Google', 
+      'Trending Movies' : 'Never miss the latest and upcoming movies anymore',
+      'Entertainment News' : 'Latest news from the entertainment industry',
+      'Open Source' : `${siteTitle} is available for developers to collaborate and anyone to use for free of charge`
+    }
 
     return (
       <Responsive>
@@ -69,41 +69,17 @@ class About extends Component {
               content='Features'
             />
             <List>
-              <List.Item>
-                <List.Icon name='search' />
-                <List.Content>
-                  <List.Header>Easy Content Lookup</List.Header>
-                  <List.Description>Designed to make searching for your favorite content easier than ever</List.Description>
-                </List.Content>
-              </List.Item>
-              <List.Item>
-                <List.Icon name='check' />
-                <List.Content>
-                  <List.Header>Multiple Sources</List.Header>
-                  <List.Description>Search for movies and shows from The Movie Database (TMDb), Twitter, YouTube, and Google</List.Description>
-                </List.Content>
-              </List.Item>
-              <List.Item>
-                <List.Icon name='bolt' />
-                <List.Content>
-                  <List.Header>Trending Movies</List.Header>
-                  <List.Description>Never miss the latest and upcoming movies anymore</List.Description>
-                </List.Content>
-              </List.Item>
-              <List.Item>
-                <List.Icon name='gem' />
-                <List.Content>
-                  <List.Header>Entertainment News</List.Header>
-                  <List.Description>Latest news from the entertainment industry</List.Description>
-                </List.Content>
-              </List.Item>
-              <List.Item>
-                <List.Icon name='github' />
-                <List.Content>
-                  <List.Header>Open Source</List.Header>
-                  <List.Description>{siteTitle} is available for developers to collaborate and anyone to use for free of charge.</List.Description>
-                </List.Content>
-              </List.Item>
+              {Object.keys(featuresObj).map(function(key, index) {
+                return (
+                  <List.Item key={index + "-detail"}>
+                    <List.Icon name='star' />
+                    <List.Content>
+                      <List.Header>{key}</List.Header>
+                        {featuresObj[key]}
+                    </List.Content>
+                  </List.Item>
+                )}
+              )}
             </List>
           </Segment>
 
@@ -118,7 +94,7 @@ class About extends Component {
               <List.Item>
                 <Image avatar src={jenny}  />
                 <List.Content>
-                  <List.Header>Naruth Kongurai</List.Header>
+                  <List.Header><a href="https://www.naruthk.com/">Naruth Kongurai</a></List.Header>
                   Frontend Developer
                 </List.Content>
               </List.Item>
@@ -132,5 +108,3 @@ class About extends Component {
     );
   }
 }
-
-export default About;

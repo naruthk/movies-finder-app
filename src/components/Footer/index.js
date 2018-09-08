@@ -10,7 +10,8 @@ import {
 } from 'semantic-ui-react'
 
 const TemplateFooter = () => (
-  <Segment inverted vertical style={{ padding: '5em 0em', margin: '50px 0 0 0'}}>
+  <Segment inverted vertical 
+    style={{ padding: '5em 0em', margin: '50px 0 0 0'}} >
     <Container>
       <Grid divided inverted stackable>
         <Grid.Row>

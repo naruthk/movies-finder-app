@@ -1,30 +1,23 @@
 import React, { Component } from 'react'
 import { Helmet } from 'react-helmet'
 import axios from 'axios'
-import moment from 'moment'
+
+import { Container, Grid, Header, Input, Responsive, Segment, Popup } from 'semantic-ui-react'
 
 import Config from '../utils/app.config'
-
-import {
-  Container,
-  Grid,
-  Header,
-  Input,
-  Responsive,
-  Segment,
-} from 'semantic-ui-react'
 
 import TemplateHeader from '../components/Header'
 import TemplateFooter from '../components/Footer'
 
-import CurrentlyInTheaters from '../components/CurrentlyInTheatersSection'
-import TrendingThisMonth from '../components/Trending/TrendingMoviesSection'
-import TrendingNews from '../components/Trending/TrendingNewsSection'
+import CurrentlyInTheatersSection from '../components/Movies/Grid/Section'
+import TrendingThisWeekSection from '../components/Movies/List/Section'
+import EntertainmentNewsSection from '../components/News/Section'
+
+import Banner from '../components/Banner'
 
 import { siteTitle } from '../utils/'
 
-
-class Home extends Component {
+export default class Home extends Component {
 
   constructor() {
     super()
@@ -38,23 +31,15 @@ class Home extends Component {
   componentDidMount() {
     const { tmdb_api_key, tmdb_default_uri, newsapi_api_key, newsapi_default_uri } = Config
 
+    // Now Playing
     axios.get(`${tmdb_default_uri}/movie/now_playing?api_key=${tmdb_api_key}`)
       .then(res => {
         const currentlyInTheaters = res.data.results
         this.setState({ currentlyInTheaters })
       }
     );
-    // Fetch movies in theaters
-    // const dateOneMonthAgo = moment().subtract(30, 'days').format('YYYY-MM-DD')
-    // const dateToday = moment().format('YYYY-MM-DD')
-    // axios.get(`${tmdb_default_uri}/discover/movie?api_key=${tmdb_api_key}&primary_release_date.gte=${dateOneMonthAgo}&primary_release_date.lte=${dateToday}`)
-    //   .then(res => {
-    //     const currentlyInTheaters = res.data.results
-    //     this.setState({ currentlyInTheaters })
-    //   }
-    // );
 
-    // Fetch trending movies
+    // Trending Movies This Week
     axios.get(`${tmdb_default_uri}/trending/all/week?api_key=${tmdb_api_key}`)
       .then(res => {
         const trendingMovies = res.data.results
@@ -62,7 +47,7 @@ class Home extends Component {
       }
     );
 
-    // Fetch entertainment news
+    // Entertainment News
     axios.get(`${newsapi_default_uri}/top-headlines?country=us&category=entertainment&apiKey=${newsapi_api_key}`)
       .then(res => {
         const entertainmentNews = res.data.articles
@@ -84,60 +69,63 @@ class Home extends Component {
         <TemplateHeader>
 
           <Segment
-            inverted
-            textAlign='center'
-            style={{ minHeight: 700, padding: '1em 0em' }}
-            vertical
-          >
+            inverted vertical textAlign='center'
+            style={{ minHeight: 700, padding: '1em 0em' }} >
             <Container text>
-              <Header
+              <Header inverted
                 as='h1'
                 content='Movies Finder'
-                inverted
                 style={{
                   fontSize: '4em',
                   fontWeight: 'normal',
-                  marginBottom: 0,
                   marginTop: '3em',
-                }}
-              />
-              <Header
+                }} />
+              <Header inverted
                 as='h2'
                 content='Look up information on a particular movie and TV show!'
-                inverted
                 style={{
                   fontSize: '1.7em',
                   fontWeight: 'normal',
                   marginTop: '1.5em',
                   marginBottom: '1.5em'
-                }}
-              />
-              <Input action='Search' placeholder='Search...' />
+                }} />
+              <Popup
+                trigger={<Input icon='search' placeholder='Search...' size='medium'/>}
+                header='What can I search?'
+                content='You may search for movies, TV shows, and people.'
+                on='focus' />
             </Container>
           </Segment>
         
         </TemplateHeader>
 
-        <CurrentlyInTheaters content={this.state.currentlyInTheaters} />
+        <CurrentlyInTheatersSection 
+          title='Currently in Theaters'
+          subtitle='Movies currently on show this week'
+          content={this.state.currentlyInTheaters} />
 
-        <Segment
-            inverted
-            textAlign='center'
-            style={{ padding: '1em 0em', margin: '2em 0' }}
-            vertical
-         >
-          <Container>
-            <p>{siteTitle} strives to bring you all the latest news and updates for your favorite movies and TV shows.</p>
-            <p>Bookmark this site for easy access!</p>
-          </Container>
-         </Segment>
-        
+        <Banner text={<div><p>{siteTitle} strives to bring you all the latest news and updates for your favorite movies and TV shows.</p>
+        <p>Bookmark this site for easy access!</p></div>} />
+
         <Segment vertical>
           <Grid columns='equal' stackable>
             <Grid.Row>
 
-              <TrendingThisMonth content={this.state.trendingMovies} />
-              <TrendingNews content={this.state.entertainmentNews} />
+              <TrendingThisWeekSection
+                title='Trending This Week'
+                subtitle={`Find out what's popular this week on IMDB`}
+                buttonTitle='View more on IMDB'
+                buttonIcon='imdb'
+                buttonLink='https://imdb.com'
+                content={this.state.trendingMovies} />
+
+              <EntertainmentNewsSection 
+                title='Entertainment News'
+                subtitle='Get the latest updates as it happens'
+                buttonTitle='Read more on Google News'
+                buttonIcon='google'
+                buttonLink='https://news.google.com'
+                content={this.state.entertainmentNews} />
               
             </Grid.Row>
           </Grid>
@@ -149,5 +137,3 @@ class Home extends Component {
     );
   }
 }
-
-export default Home;

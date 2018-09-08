@@ -1,11 +1,8 @@
 import React from 'react'
-import {
-  Button,
-} from 'semantic-ui-react'
+import { Button } from 'semantic-ui-react'
 
-class ExternalLinkButton extends React.Component {
+export default class ExternalLinkButton extends React.Component {
   render() {
-
     const { icon, url, text } = this.props
 
     return (
@@ -15,5 +12,3 @@ class ExternalLinkButton extends React.Component {
     )
   }
 }
-
-export default ExternalLinkButton

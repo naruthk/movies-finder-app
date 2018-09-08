@@ -1,13 +1,6 @@
 import React, { Component } from 'react'
 import { Helmet } from 'react-helmet'
-import {
-  Accordion,
-  Container,
-  Header,
-  Icon,
-  Responsive,
-  Segment,
-} from 'semantic-ui-react'
+import { Accordion, Container, Header, Icon, Responsive, Segment } from 'semantic-ui-react'
 
 import TemplateHeader from '../components/Header'
 import TemplateFooter from '../components/Footer'
@@ -22,14 +15,11 @@ class Faq extends Component {
     const { index } = titleProps
     const { activeIndex } = this.state
     const newIndex = activeIndex === index ? -1 : index
-
     this.setState({ activeIndex: newIndex })
   }
 
   render() {
-
     const lastUpdatedDate = 'September 6, 2018'
-
     const { activeIndex } = this.state
 
     return (
@@ -109,13 +99,11 @@ class Faq extends Component {
             <Accordion.Content active={activeIndex === 3}>
               <p>If you are interested in working with me to improve and add more features to {siteTitle}, please send me an <a href="mailto:nkongurai@gmail.com">email</a> explaining who you are, your background, and why you want to work with me.</p>
             </Accordion.Content>
-
           </Accordion>
 
         </Container>
-      
         <TemplateFooter />
-        
+    
       </Responsive>
     );
   }

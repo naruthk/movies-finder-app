@@ -1,19 +1,13 @@
 import React from 'react'
 import moment from 'moment'
 
-import {
-  Button,
-  Container,
-  Grid,
-  Header,
-  Item,
-  List,
-} from 'semantic-ui-react'
+import { Button, Container, Grid, Header, Item, List } from 'semantic-ui-react'
 
-import TrendingNewsUnitLarge from '../TrendingNewsUnitLarge'
-import ExternalLinkButton from '../../Buttons/ExternalLinkButton'
+import NewsUnit from '../Unit'
 
-class TrendingNewsSection extends React.Component {
+import ExternalLinkButton from '../../Buttons/ButtonsWithExternalLink'
+
+export default class NewsSection extends React.Component {
 
   constructor(props) {
     super(props);
@@ -28,33 +22,31 @@ class TrendingNewsSection extends React.Component {
   }
 
   render() {
-
     const results = this.props.content
+    const button = (<ExternalLinkButton url={this.props.buttonLink} text={this.props.buttonTitle} icon={this.props.buttonIcon} />)
 
     return (
       <Grid.Column style={{ padding: '3em' }}>
-
         <Grid divided='vertically'>
           <Grid.Row columns={2}>
             <Grid.Column>
               <Header 
                 as='h2'
-                content='Entertainment News'
-                subheader={`Get the latest updates as it happens`}
+                content={this.props.title}
+                subheader={this.props.subtitle}
               />
             </Grid.Column>
             <Grid.Column textAlign='right'>
-              <ExternalLinkButton url="https://news.google.com" text='Read more on Google News' icon='google' />
+              {button}
             </Grid.Column>
           </Grid.Row>
         </Grid>
 
         <Item.Group link>
           <List divided verticalAlign='middle'>
-
             {results.slice(0, this.state.loadLimit).map((news, index) => {
               return (
-                <TrendingNewsUnitLarge
+                <NewsUnit
                   key={index + `-item`}
                   imgUrl={news.urlToImage}
                   title={news.title}
@@ -67,7 +59,7 @@ class TrendingNewsSection extends React.Component {
             })}
 
             {(this.state.loadLimit < results.length) && <Button attached='bottom' onClick={this.handleClick}>View more</Button>}
-            {(this.state.loadLimit > results.length) && <Container textAlign='center' style={{padding: '1.2rem'}}><ExternalLinkButton url="https://news.google.com" text='Read more on Google News' icon='google' /></Container>}
+            {(this.state.loadLimit > results.length) && <Container textAlign='center' style={{padding: '1.2rem'}}>{button}</Container>}
 
           </List>
         </Item.Group>
@@ -75,5 +67,3 @@ class TrendingNewsSection extends React.Component {
     )
   }
 }
-
-export default TrendingNewsSection

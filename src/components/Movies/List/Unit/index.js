@@ -1,13 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import {
-  Item,
-  Icon,
-} from 'semantic-ui-react'
+import { Item, Icon } from 'semantic-ui-react'
 
-import Config from '../../../utils/app.config'
+import Config from '../../../../utils/app.config'
 
-class TrendingMoviesUnit extends React.Component {
+export default class TrendingMoviesUnit extends React.Component {
 
   render() {
 
@@ -40,5 +37,3 @@ class TrendingMoviesUnit extends React.Component {
     )
   }
 }
-
-export default TrendingMoviesUnit

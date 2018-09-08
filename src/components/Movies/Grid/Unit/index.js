@@ -1,19 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import {
-  Image,
-  Grid,
-  Header,
-  Dimmer,
-  Item,
-  Button,
-  Icon,
-} from 'semantic-ui-react'
+import { Image, Grid, Header, Dimmer, Item, Button, Icon } from 'semantic-ui-react'
 
-import Config from '../../utils/app.config'
+import Config from '../../../../utils/app.config'
 
-export default class CurrentlyInTheatersUnit extends React.Component {
+export default class MoviesAsGridUnit extends React.Component {
   
   state = {}
 
@@ -22,10 +14,8 @@ export default class CurrentlyInTheatersUnit extends React.Component {
 
   render() {
     const { active } = this.state
-
     const { id, imgUrl, title, description, date } = this.props;
     const { tmdb_image_uri } = Config
-
     const pushToDetail = { 
       pathname: `/list/${id}`
     };

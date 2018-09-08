@@ -1,13 +1,9 @@
 import React from 'react'
-import {
-  Item,
-  Image,
-  List,
-} from 'semantic-ui-react'
+import { Item, Image, List } from 'semantic-ui-react'
 
-class TrendingNewsUnitLarge extends React.Component {
+export default class NewsUnit extends React.Component {
+
   render() {
-
     const { imgUrl, title, url, date, source } = this.props;
 
     return (
@@ -34,5 +30,3 @@ class TrendingNewsUnitLarge extends React.Component {
     )
   }
 }
-
-export default TrendingNewsUnitLarge

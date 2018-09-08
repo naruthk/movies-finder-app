@@ -1,31 +1,20 @@
 import React from 'react'
 import moment from 'moment'
+import { Grid, List, Segment, Image, Icon } from 'semantic-ui-react'
+
 import Config from '../../../utils/app.config'
 import { shortenLargeNumber } from '../../../utils/helper'
 
-import {
-  Grid,
-  Header,
-  List,
-  Segment,
-  Image,
-  Item,
-  Icon
-} from 'semantic-ui-react'
-
-import ExternalLinkButton from '../../Buttons/ExternalLinkButton'
-
-export default class OverallDetailsSection extends React.Component {
+export default class MovieOverviewSection extends React.Component {
 
   render() {
-
     const { tmdb_image_uri } = Config
-
     const result = this.props.content
-
+    const director = result.crew[0] ? result.crew[0].name : ""
     const resultsObj = {
       'Plot': `${result.overview}`,
       'Genres': `${(result.genres).join(', ').toString()}`,
+      'Directed by': `${director}`,
       'Release Date': `${moment(result.release_date).format('MMMM Do YYYY')}`,
       'Runtime': `${result.runtime} minutes`,
       'Budget': `${shortenLargeNumber(result.budget)}`,
