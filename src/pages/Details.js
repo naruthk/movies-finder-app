@@ -13,6 +13,7 @@ import TemplateFooter from '../components/Footer'
 import MovieOverviewSection from '../components/Movies/Overview'
 import MovieCastSection from '../components/Movies/Cast'
 import MovieCrewSection from '../components/Movies/Crew'
+import MovieNewsSection from '../components/News/Section';
 
 export default class Details extends Component {
 
@@ -34,7 +35,8 @@ export default class Details extends Component {
       vote_count: '',
       cast: [],
       crew: [],
-      videos: []
+      videos: [],
+      news: []
     }
   }
   
@@ -48,7 +50,7 @@ export default class Details extends Component {
         const movieDetails = res.data
         const genres = movieDetails.genres.map(genre => genre.name);
 
-        this.setState({
+        this.setState((prevState) => ({
           imdb_id: movieDetails.imdb_id,
           title: movieDetails.title,
           overview: movieDetails.overview,
@@ -61,7 +63,7 @@ export default class Details extends Component {
           runtime: movieDetails.runtime,
           vote_average: movieDetails.vote_average,
           vote_count: movieDetails.vote_count
-         })
+        }), () => {this.fetchNews()})
       }
     );
 
@@ -83,6 +85,19 @@ export default class Details extends Component {
         this.setState({ 
           videos: videos
         })
+      }
+    );
+  }
+
+  fetchNews = () => {
+    const { newsapi_default_uri, newsapi_api_key } = Config
+    const movieTitleForQuerying = this.state.title.split(" ").join('+') + "+film"
+                      
+    // Get entertainment news on this content
+    axios.get(`${newsapi_default_uri}/everything?q=${movieTitleForQuerying}&apiKey=${newsapi_api_key}`)
+      .then(res => {
+        const news = res.data.articles
+        this.setState({ news })
       }
     );
   }
@@ -150,11 +165,15 @@ export default class Details extends Component {
               </Grid.Column>
 
               <Grid.Column style={{ padding: '3em' }}>
-                <Header
-                  as='h2'
-                  content='Media'
-                  subheader={`All the buzz around ${this.state.title}`}
-                />
+
+                <MovieNewsSection 
+                  title='Media'
+                  subtitle={`All the buzz around ${this.state.title}`}
+                  // buttonTitle='Read more on Google News'
+                  // buttonIcon='google'
+                  // buttonLink='https://news.google.com'
+                  content={this.state.news} />
+
               </Grid.Column>
             </Grid.Row>
           </Grid>

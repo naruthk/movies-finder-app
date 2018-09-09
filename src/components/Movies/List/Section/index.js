@@ -25,7 +25,7 @@ export default class ListOfMoviesSection extends React.Component {
     const button = (<ExternalLinkButton url={this.props.buttonLink} text={this.props.buttonTitle} icon={this.props.buttonIcon} />)
     
     return (
-      <Grid.Column style={{ padding: '3em' }}>
+      <Grid.Column>
 
         <Grid divided='vertically'>
           <Grid.Row columns={2}>

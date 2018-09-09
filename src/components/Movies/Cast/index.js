@@ -43,7 +43,7 @@ export default class MovieCastSection extends React.Component {
           )
         })}
         <Container fluid>
-          {(this.state.loadLimit < result.length) && <Button attached='bottom' onClick={this.handleClick}>View more</Button>}
+          {(this.state.loadLimit < result.length) && <Button attached='bottom' onClick={this.handleClick}>Load more cast</Button>}
         </Container>
       </Grid>
     )

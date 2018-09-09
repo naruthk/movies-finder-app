@@ -8,7 +8,7 @@ export default class TrendingMoviesUnit extends React.Component {
 
   render() {
 
-    const { id, imgUrl, title, description, date, vote_average, vote_count } = this.props;
+    const { id, imgUrl, title, description, date, vote_average, vote_count, imgSize } = this.props;
     const { tmdb_image_uri } = Config
 
     const pushToDetail = { 
@@ -19,7 +19,7 @@ export default class TrendingMoviesUnit extends React.Component {
       <Item>
         <Link to={pushToDetail}>
           <Item.Image 
-            size='tiny'
+            size={imgSize ? imgSize : 'tiny'}
             src={`${tmdb_image_uri}/${imgUrl}`} 
             style={{margin: '0 10px 0 0'}}
           />

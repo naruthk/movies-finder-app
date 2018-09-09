@@ -25,8 +25,8 @@ const TemplateFooter = () => (
             <List link inverted>
               <List.Item as='a' href="https://www.themoviedb.org/">The Movie Database (TMDb)</List.Item>
               <List.Item as='a' href="https://www.newsapi.org">News API</List.Item>
-              <List.Item as='a' href="https://developers.google.com/youtube/">YouTube API</List.Item>
-              <List.Item as='a' href="https://dev.twitter.com/">Twitter API</List.Item>
+              {/* <List.Item as='a' href="https://developers.google.com/youtube/">YouTube API</List.Item> */}
+              {/* <List.Item as='a' href="https://dev.twitter.com/">Twitter API</List.Item> */}
             </List>
           </Grid.Column>
           <Grid.Column width={3}>

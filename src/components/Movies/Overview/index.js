@@ -10,11 +10,14 @@ export default class MovieOverviewSection extends React.Component {
   render() {
     const { tmdb_image_uri } = Config
     const result = this.props.content
-    const director = result.crew[0] ? result.crew[0].name : ""
+
+    const filteringForDirectors = result.crew ? result.crew.filter(person => person.job === "Director") : ""
+    const listOfDirectors = filteringForDirectors.map(director => director.name).join(", ")
+    
     const resultsObj = {
       'Plot': `${result.overview}`,
       'Genres': `${(result.genres).join(', ').toString()}`,
-      'Directed by': `${director}`,
+      'Directed by': `${listOfDirectors}`,
       'Release Date': `${moment(result.release_date).format('MMMM Do YYYY')}`,
       'Runtime': `${result.runtime} minutes`,
       'Budget': `${shortenLargeNumber(result.budget)}`,

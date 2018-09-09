@@ -23,10 +23,10 @@ export default class NewsSection extends React.Component {
 
   render() {
     const results = this.props.content
-    const button = (<ExternalLinkButton url={this.props.buttonLink} text={this.props.buttonTitle} icon={this.props.buttonIcon} />)
+    const button = this.props.buttonTitle ? (<ExternalLinkButton url={this.props.buttonLink} text={this.props.buttonTitle} icon={this.props.buttonIcon} />) : null
 
     return (
-      <Grid.Column style={{ padding: '3em' }}>
+      <Grid.Column>
         <Grid divided='vertically'>
           <Grid.Row columns={2}>
             <Grid.Column>

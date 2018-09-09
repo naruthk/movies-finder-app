@@ -13,6 +13,7 @@ import CurrentlyInTheatersSection from '../components/Movies/Grid/Section'
 import TrendingThisWeekSection from '../components/Movies/List/Section'
 import EntertainmentNewsSection from '../components/News/Section'
 
+import SearchMovies from '../components/Search/SearchWithAutoComplete'
 import Banner from '../components/Banner'
 
 import { siteTitle } from '../utils/'
@@ -89,11 +90,9 @@ export default class Home extends Component {
                   marginTop: '1.5em',
                   marginBottom: '1.5em'
                 }} />
-              <Popup
-                trigger={<Input icon='search' placeholder='Search...' size='medium'/>}
-                header='What can I search?'
-                content='You may search for movies, TV shows, and people.'
-                on='focus' />
+
+              <SearchMovies />
+              
             </Container>
           </Segment>
         
@@ -106,31 +105,33 @@ export default class Home extends Component {
 
         <Banner text={<div><p>{siteTitle} strives to bring you all the latest news and updates for your favorite movies and TV shows.</p>
         <p>Bookmark this site for easy access!</p></div>} />
+        
+        <Container>
+          <Segment vertical>
+            <Grid columns='equal' stackable>
+              <Grid.Row>
 
-        <Segment vertical>
-          <Grid columns='equal' stackable>
-            <Grid.Row>
+                <TrendingThisWeekSection
+                  title='Trending This Week'
+                  subtitle={`Find out what's popular this week on IMDB`}
+                  buttonTitle='View more on IMDB'
+                  buttonIcon='imdb'
+                  buttonLink='https://imdb.com'
+                  content={this.state.trendingMovies} />
 
-              <TrendingThisWeekSection
-                title='Trending This Week'
-                subtitle={`Find out what's popular this week on IMDB`}
-                buttonTitle='View more on IMDB'
-                buttonIcon='imdb'
-                buttonLink='https://imdb.com'
-                content={this.state.trendingMovies} />
-
-              <EntertainmentNewsSection 
-                title='Entertainment News'
-                subtitle='Get the latest updates as it happens'
-                buttonTitle='Read more on Google News'
-                buttonIcon='google'
-                buttonLink='https://news.google.com'
-                content={this.state.entertainmentNews} />
-              
-            </Grid.Row>
-          </Grid>
-        </Segment>
-
+                <EntertainmentNewsSection 
+                  title='Entertainment News'
+                  subtitle='Get the latest updates as it happens'
+                  buttonTitle='Read more on Google News'
+                  buttonIcon='google'
+                  buttonLink='https://news.google.com'
+                  content={this.state.entertainmentNews} />
+                
+              </Grid.Row>
+            </Grid>
+          </Segment>
+        </Container>
+        
         <TemplateFooter />
         
       </Responsive>

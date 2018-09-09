@@ -39,7 +39,7 @@ export default class MovieCrewSection extends React.Component {
           })}
         </Grid>
         <Divider hidden />
-        {(!this.state.toggle) && <Button attached='bottom' onClick={this.handleClick}>View all</Button> }
+        {(!this.state.toggle) && <Button attached='bottom' onClick={this.handleClick}>View the rest of the crew</Button> }
         {(this.state.toggle) &&
           <Grid divided>
             <Grid.Column width={8}>
