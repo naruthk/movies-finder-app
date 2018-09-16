@@ -1,3 +1,7 @@
+/**
+ * ************ KEYS AND DEFAULT API URLS ************
+ * === RECOMMENDED NOT TO IGNORE THIS FILE WHEN PUSHING TO GITHUB ===
+ */
 export default {
   tmdb_api_key: '96613394f7b52c775c3fd01d9e9672b8',
   tmdb_default_uri: 'https://api.themoviedb.org/3',

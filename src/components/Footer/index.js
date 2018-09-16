@@ -1,6 +1,4 @@
 import React from 'react'
-import { siteTitle, siteDescription, author } from '../../utils/index.js';
-
 import {
   Container,
   Grid,
@@ -8,6 +6,10 @@ import {
   List,
   Segment,
 } from 'semantic-ui-react'
+
+import config from '../../utils/config';
+
+const { siteTitle, siteDescription, author, authorUrl, copyright } = config
 
 const TemplateFooter = () => (
   <Segment inverted vertical 
@@ -25,15 +27,11 @@ const TemplateFooter = () => (
             <List link inverted>
               <List.Item as='a' href="https://www.themoviedb.org/">The Movie Database (TMDb)</List.Item>
               <List.Item as='a' href="https://www.newsapi.org">News API</List.Item>
-              {/* <List.Item as='a' href="https://developers.google.com/youtube/">YouTube API</List.Item> */}
-              {/* <List.Item as='a' href="https://dev.twitter.com/">Twitter API</List.Item> */}
             </List>
           </Grid.Column>
           <Grid.Column width={3}>
-            <Header as='h4' inverted>
-              &copy; 2018 | {siteTitle}
-            </Header>
-            <p>Developed by <a href="https://www.naruthk.com/">{author}</a></p>
+            <Header as='h4' inverted>{copyright} | {siteTitle}</Header>
+            <p>Developed by <a href={authorUrl}>{author}</a></p>
           </Grid.Column>
         </Grid.Row>
       </Grid>

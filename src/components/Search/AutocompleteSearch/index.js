@@ -1,14 +1,15 @@
 import React, { Component } from 'react'
 import history from '../../../utils/history'
 import { Search, Container, Item } from 'semantic-ui-react'
-
 import _ from 'lodash'
 import axios from 'axios'
 import moment from 'moment'
 
+// Components
 import ListOfMoviesUnit from '../../Movies/List/Unit'
 
-import Config from '../../../utils/app.config'
+// Utilities
+import authentication from '../../../utils/authentication'
 
 export default class SearchWithAutoComplete extends Component {
 
@@ -28,16 +29,12 @@ export default class SearchWithAutoComplete extends Component {
   }
 
   handleSearchChange = (e, { value }) => {
+    const { tmdb_api_key, tmdb_default_uri } = authentication
+    
     this.setState({ isLoading: true, value })
-
-    const { tmdb_api_key, tmdb_default_uri } = Config
-
     setTimeout(() => {
       if (this.state.value.length < 1) return this.resetComponent()
-      
       const searchTerms = this.state.value.split(" ").join("+")
-
-      // Get movie and tv shows based on query
       axios.get(`${tmdb_default_uri}/search/multi?api_key=${tmdb_api_key}&language=en-US&query=${searchTerms}`)
         .then(res => {
           this.setState({ results: [] })
@@ -85,41 +82,17 @@ export default class SearchWithAutoComplete extends Component {
       </Item.Group>
     ]
     return (
-      <Container>
-        <Search
-          fluid
-          // aligned='right'
-          noResultsMessage='No results to display'
-          loading={isLoading}
-          onResultSelect={this.handleResultSelect}
-          onSearchChange={_.debounce(this.handleSearchChange, 500, { leading: true })}
-          results={results}
-          resultRenderer={resultsRenderer}
-          value={value}
-          {...this.props}
-        />
-      </Container>
+      <Search
+        fluid
+        noResultsMessage='No results to display'
+        loading={isLoading}
+        onResultSelect={this.handleResultSelect}
+        onSearchChange={_.debounce(this.handleSearchChange, 500, { leading: true })}
+        results={results}
+        resultRenderer={resultsRenderer}
+        value={value}
+        {...this.props}
+      />
     )
   }
 }
-
-{/* <Grid>
-  <Grid.Column width={6}>
-    <Search
-      loading={isLoading}
-      onResultSelect={this.handleResultSelect}
-      onSearchChange={_.debounce(this.handleSearchChange, 500, { leading: true })}
-      results={results}
-      value={value}
-      {...this.props}
-    />
-  </Grid.Column>
-  <Grid.Column width={10}>
-    <Segment>
-      <Header>State</Header>
-      <pre style={{ overflowX: 'auto' }}>{JSON.stringify(this.state, null, 2)}</pre>
-      <Header>Options</Header>
-      <pre style={{ overflowX: 'auto' }}>{JSON.stringify(source, null, 2)}</pre>
-    </Segment>
-  </Grid.Column>
-</Grid> */}

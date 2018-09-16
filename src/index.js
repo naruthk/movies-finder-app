@@ -5,15 +5,15 @@ import history from './utils/history'
 import ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
 
-// Styles
-import './assets/scss/style.scss'
-import 'semantic-ui-css/semantic.min.css';
-
 // Components
 import Home from './pages/Home';
 import Details from './pages/Details';
 import About from './pages/About';
 import Faq from './pages/Faq';
+
+// Styles
+import './assets/scss/style.scss'
+import 'semantic-ui-css/semantic.min.css';
 
 ReactDOM.render((
   <Router history={history}>

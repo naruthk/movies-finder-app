@@ -1,19 +1,14 @@
 import React from 'react'
-import moment from 'moment'
-
 import { Button, Container, Grid, Header, Item, List } from 'semantic-ui-react'
 
+// Components
 import NewsUnit from '../Unit'
-
 import ExternalLinkButton from '../../Buttons/ButtonsWithExternalLink'
 
 export default class NewsSection extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      loadLimit: 7
-    }
+  state = {
+    loadLimit: 7
   }
   
   handleClick = (e) => {
@@ -22,8 +17,9 @@ export default class NewsSection extends React.Component {
   }
 
   render() {
-    const results = this.props.content
-    const button = this.props.buttonTitle ? (<ExternalLinkButton url={this.props.buttonLink} text={this.props.buttonTitle} icon={this.props.buttonIcon} />) : null
+    const { news, title, subtitle, buttonLink, buttonIcon, buttonTitle} = this.props
+    const button = buttonTitle ? (<ExternalLinkButton url={buttonLink} text={buttonTitle} icon={buttonIcon} />) : null
+    const isReachedLoadLimit = this.state.loadLimit < news.length
 
     return (
       <Grid.Column>
@@ -32,34 +28,30 @@ export default class NewsSection extends React.Component {
             <Grid.Column>
               <Header 
                 as='h2'
-                content={this.props.title}
-                subheader={this.props.subtitle}
+                content={title}
+                subheader={subtitle}
               />
             </Grid.Column>
-            <Grid.Column textAlign='right'>
-              {button}
-            </Grid.Column>
+            <Grid.Column textAlign='right'>{button}</Grid.Column>
           </Grid.Row>
         </Grid>
 
         <Item.Group link>
           <List divided verticalAlign='middle'>
-            {results.slice(0, this.state.loadLimit).map((news, index) => {
+            {news.slice(0, this.state.loadLimit).map((news, index) => {
               return (
                 <NewsUnit
                   key={index + `-item`}
-                  imgUrl={news.urlToImage}
-                  title={news.title}
-                  description={news.description}
-                  date={moment(news.publishedAt).startOf('day').fromNow()}
-                  source={news.source.name}
-                  url={news.url}
+                  {...news}
                 />
               )
             })}
 
-            {(this.state.loadLimit < results.length) && <Button attached='bottom' onClick={this.handleClick}>View more</Button>}
-            {(this.state.loadLimit > results.length) && <Container textAlign='center' style={{padding: '1.2rem'}}>{button}</Container>}
+            {isReachedLoadLimit ? (
+              <Button attached='bottom' onClick={this.handleClick}>View more</Button>
+            ) : (
+              <Container textAlign='center' style={{padding: '1.2rem'}}>{button}</Container>
+            )}
 
           </List>
         </Item.Group>

@@ -2,13 +2,13 @@ import React from 'react'
 import moment from 'moment'
 import { Grid, List, Segment, Image, Icon } from 'semantic-ui-react'
 
-import Config from '../../../utils/app.config'
-import { shortenLargeNumber } from '../../../utils/helper'
+import authentication from '../../../utils/authentication'
+import helpers from '../../../utils/helpers'
 
 export default class MovieOverviewSection extends React.Component {
 
   render() {
-    const { tmdb_image_uri } = Config
+    const { tmdb_image_uri } = authentication
     const result = this.props.content
 
     const filteringForDirectors = result.crew ? result.crew.filter(person => person.job === "Director") : ""
@@ -20,8 +20,8 @@ export default class MovieOverviewSection extends React.Component {
       'Directed by': `${listOfDirectors}`,
       'Release Date': `${moment(result.release_date).format('MMMM Do YYYY')}`,
       'Runtime': `${result.runtime} minutes`,
-      'Budget': `${shortenLargeNumber(result.budget)}`,
-      'Revenue': `${shortenLargeNumber(result.revenue)}`
+      'Budget': `${helpers.shortenLargeNumber(result.budget)}`,
+      'Revenue': `${helpers.shortenLargeNumber(result.revenue)}`
     }
 
     return (

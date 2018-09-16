@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import { Image, Grid, Header, Dimmer, Item, Button, Icon } from 'semantic-ui-react'
 
-import Config from '../../../../utils/app.config'
+import authentication from '../../../../utils/authentication'
 
 export default class MoviesAsGridUnit extends React.Component {
   
@@ -15,7 +15,7 @@ export default class MoviesAsGridUnit extends React.Component {
   render() {
     const { active } = this.state
     const { id, imgUrl, title, description, date } = this.props;
-    const { tmdb_image_uri } = Config
+    const { tmdb_image_uri } = authentication
     const pushToDetail = { 
       pathname: `/list/${id}`
     };

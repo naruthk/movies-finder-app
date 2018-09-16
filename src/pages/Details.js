@@ -1,19 +1,19 @@
 import React, { Component } from 'react'
 import { Helmet } from 'react-helmet'
 import axios from 'axios'
-
 import { Container, Header, Responsive, Segment, Modal, Grid, Button, Embed } from 'semantic-ui-react'
 
-import Config from '../utils/app.config'
-import { siteTitle } from '../utils'
-
+// Components
 import TemplateHeader from '../components/Header'
 import TemplateFooter from '../components/Footer'
+import SectionMovieOverview from '../components/Movies/Overview'
+import SectionMovieCast from '../components/Movies/Cast'
+import SectionMovieCrew from '../components/Movies/Crew'
+import SectionNews from '../components/News/Section';
 
-import MovieOverviewSection from '../components/Movies/Overview'
-import MovieCastSection from '../components/Movies/Cast'
-import MovieCrewSection from '../components/Movies/Crew'
-import MovieNewsSection from '../components/News/Section';
+// Utilties
+import authentication from '../utils/authentication'
+import config from '../utils/config'
 
 export default class Details extends Component {
 
@@ -38,19 +38,25 @@ export default class Details extends Component {
       videos: [],
       news: []
     }
+    this.fetchMovieDetails = this.fetchMovieDetails.bind(this)
+    this.fetchCastCrew = this.fetchCastCrew.bind(this)
+    this.fetchVideos = this.fetchVideos.bind(this)
   }
   
   componentDidMount() {
-    const { tmdb_api_key, tmdb_default_uri } = Config
-    const movieId = this.props.match.params.movieid 
+    this.fetchMovieDetails()
+    this.fetchCastCrew()
+    this.fetchVideos()
+  }
 
-    // Get movie details
+  fetchMovieDetails() {
+    const movieId = this.props.match.params.movieid 
+    const { tmdb_api_key, tmdb_default_uri } = authentication
     axios.get(`${tmdb_default_uri}/movie/${movieId}?api_key=${tmdb_api_key}&language=en-US`)
       .then(res => {
         const movieDetails = res.data
         const genres = movieDetails.genres.map(genre => genre.name);
-
-        this.setState((prevState) => ({
+        this.setState(() => ({
           imdb_id: movieDetails.imdb_id,
           title: movieDetails.title,
           overview: movieDetails.overview,
@@ -64,10 +70,12 @@ export default class Details extends Component {
           vote_average: movieDetails.vote_average,
           vote_count: movieDetails.vote_count
         }), () => {this.fetchNews()})
-      }
-    );
+      });
+  }
 
-    // Get cast & crew details
+  fetchCastCrew() {
+    const movieId = this.props.match.params.movieid
+    const { tmdb_api_key, tmdb_default_uri } = authentication
     axios.get(`${tmdb_default_uri}/movie/${movieId}/credits?api_key=${tmdb_api_key}&language=en-US`)
       .then(res => {
         const castAndCrewDetails = res.data
@@ -75,49 +83,46 @@ export default class Details extends Component {
           cast: castAndCrewDetails.cast,
           crew: castAndCrewDetails.crew
         })
-      }
-    );
+      });
+  }
 
-    // Get videos from The Movie Database
+  fetchVideos() {
+    const movieId = this.props.match.params.movieid
+    const { tmdb_api_key, tmdb_default_uri } = authentication
     axios.get(`${tmdb_default_uri}/movie/${movieId}/videos?api_key=${tmdb_api_key}&language=en-US`)
       .then(res => {
         const videos = res.data.results
         this.setState({ 
           videos: videos
         })
-      }
-    );
+      });
   }
 
   fetchNews = () => {
-    const { newsapi_default_uri, newsapi_api_key } = Config
+    const { newsapi_default_uri, newsapi_api_key } = authentication
     const movieTitleForQuerying = this.state.title.split(" ").join('+') + "+film"
-                      
-    // Get entertainment news on this content
     axios.get(`${newsapi_default_uri}/everything?q=${movieTitleForQuerying}&apiKey=${newsapi_api_key}`)
       .then(res => {
         const news = res.data.articles
         this.setState({ news })
-      }
-    );
+      });
   }
   
   render() {
-
+    const { title, videos, cast, crew, news } = this.state
+    
     return (
       <Responsive>
-
-        <Helmet>
-            <meta charSet="utf-8" />
-            <title>{this.state.title} | {siteTitle}</title>
-        </Helmet>
-
         <TemplateHeader>
+          <Helmet>
+            <meta charSet="utf-8" />
+            <title>{title} | {config.siteTitle}</title>
+          </Helmet>
           <Segment inverted basic>
             <Container>
               <Header inverted
                 as='h1'
-                content={this.state.title}
+                content={title}
                 style={{
                   fontSize: '4em',
                   fontWeight: 'normal',
@@ -132,21 +137,20 @@ export default class Details extends Component {
           <Grid columns='equal' stackable>
             <Grid.Row>
               <Grid.Column style={{ padding: '3em' }}>
-
                 <Grid divided='vertically'>
                   <Grid.Row columns={2}>
                     <Grid.Column>
                     <Header
                       as='h2'
                       content='Overview'
-                      subheader={`Get all the details about ${this.state.title}`} />
+                      subheader={`Get all the details about ${title}`} />
                     </Grid.Column>
                     <Grid.Column textAlign='right'>
-                      {this.state.videos.length > 0 && (
+                      {videos.length > 0 && (
                         <Modal trigger={<Button>Play Trailer</Button>} closeIcon basic>
-                          <Modal.Header>{this.state.title} - Trailer</Modal.Header>
+                          <Modal.Header>{title} - Trailer</Modal.Header>
                           <Modal.Content>
-                            <Embed id={this.state.videos[0].key}  placeholder={`https://img.youtube.com/vi/${this.state.videos[0].key}/0.jpg`} source='youtube' />
+                            <Embed id={this.state.videos[0].key}  placeholder={`https://img.youtube.com/vi/${videos[0].key}/0.jpg`} source='youtube' />
                           </Modal.Content>
                         </Modal>
                       )}
@@ -154,26 +158,23 @@ export default class Details extends Component {
                   </Grid.Row>
                 </Grid>
               
-                <MovieOverviewSection content={this.state} />
+                <SectionMovieOverview content={this.state} />
 
                 <Header as='h2' content='Cast' />
-                <MovieCastSection cast={this.state.cast} />
+
+                <SectionMovieCast cast={cast} />
 
                 <Header as='h2' content='Crew' />
-                <MovieCrewSection crew={this.state.crew} />
+
+                <SectionMovieCrew crew={crew} />
 
               </Grid.Column>
 
               <Grid.Column style={{ padding: '3em' }}>
-
-                <MovieNewsSection 
+                <SectionNews 
                   title='Media'
-                  subtitle={`All the buzz around ${this.state.title}`}
-                  // buttonTitle='Read more on Google News'
-                  // buttonIcon='google'
-                  // buttonLink='https://news.google.com'
-                  content={this.state.news} />
-
+                  subtitle={`All the buzz around ${title}`}
+                  news={news} />
               </Grid.Column>
             </Grid.Row>
           </Grid>

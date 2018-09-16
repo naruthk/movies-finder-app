@@ -4,13 +4,16 @@ import {
   Menu,
 } from 'semantic-ui-react'
 
+import config from '../../utils/config'
+
+const { menu } = config
+
 const TemplateMenu = () => (
   <Menu fixed='top'>
     <Container>
-      <Menu.Item as='a' href="/">Home</Menu.Item>
-      <Menu.Item as='a' href="/about">About</Menu.Item>
-      <Menu.Item as='a' href="/faq">FAQ</Menu.Item>
-      <Menu.Item as='a'>Report</Menu.Item>
+      {menu.map((item) => {
+        return <Menu.Item as='a' href={item.path}>{item.name}</Menu.Item>
+      })}
     </Container>
   </Menu>
 )

@@ -1,4 +1,5 @@
-import globals from '../utils/globals';
+export * from './authentication'
+export * from './config'
 
-export * from './globals';
-export { globals };
+// import globals from './authentication';
+// export { globals };

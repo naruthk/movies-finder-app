@@ -1,7 +1,7 @@
 import React from 'react'
 import { Container, Grid, List, Image, Button } from 'semantic-ui-react'
 
-import Config from '../../../utils/app.config'
+import authentication from '../../../utils/authentication'
 import blankPhoto from '../../../assets/images/white-image.png'
 
 export default class MovieCastSection extends React.Component {
@@ -19,7 +19,7 @@ export default class MovieCastSection extends React.Component {
   }
 
   render() {
-    const { tmdb_image_uri } = Config
+    const { tmdb_image_uri } = authentication
     const result = this.props.cast
 
     return (
