@@ -3,7 +3,7 @@ import { Button, Container, Grid, Header, Item, List } from 'semantic-ui-react'
 
 // Components
 import NewsUnit from '../Unit'
-import ExternalLinkButton from '../../Buttons/ButtonsWithExternalLink'
+import ExternalLinkButton from '../../Button/ExternalLinkButton'
 
 export default class NewsSection extends React.Component {
 
