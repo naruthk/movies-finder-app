@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import history from '../../../utils/history'
-import { Search, Item } from 'semantic-ui-react'
+import { Search, Container, Item } from 'semantic-ui-react'
 import _ from 'lodash'
 import axios from 'axios'
 import moment from 'moment'
