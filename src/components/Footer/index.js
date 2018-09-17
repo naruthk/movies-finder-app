@@ -11,7 +11,7 @@ import config from '../../utils/config';
 
 const { siteTitle, siteDescription, author, authorUrl, copyright } = config
 
-const TemplateFooter = () => (
+const Footer = () => (
   <Segment inverted vertical 
     style={{ padding: '5em 0em', margin: '50px 0 0 0'}} >
     <Container>
@@ -39,4 +39,4 @@ const TemplateFooter = () => (
   </Segment>
 )
 
-export default TemplateFooter
+export default Footer

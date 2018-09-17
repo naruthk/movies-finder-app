@@ -1,15 +1,20 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 import { Segment, Container} from 'semantic-ui-react'
 
-export default class Banner extends React.Component {
-  render() {
-    return (
-      <Segment inverted vertical textAlign='center'
-      style={{ padding: '1em 0em', margin: '2em 0' }} >
-        <Container>
-          {this.props.text}
-        </Container>
-      </Segment>
-    )
-  }
+const Banner = props => (
+  <Segment
+    inverted
+    vertical
+    textAlign='center'
+    style={props.css} >
+    <Container>{props.text}</Container>
+  </Segment>
+)
+
+export default Banner
+
+Banner.propTypes = {
+  css: PropTypes.object,
+  text: PropTypes.string
 }

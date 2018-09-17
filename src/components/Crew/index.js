@@ -1,7 +1,8 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 import { Container, Grid, List, Divider, Button } from 'semantic-ui-react'
 
-export default class MovieCrewSection extends React.Component {
+export default class CrewSection extends React.Component {
   
   constructor(props) {
     super(props);
@@ -79,4 +80,8 @@ export default class MovieCrewSection extends React.Component {
       </Container>
     )
   }
+}
+
+CrewSection.propTypes = {
+  crew: PropTypes.array.isRequired
 }

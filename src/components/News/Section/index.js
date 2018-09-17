@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 import { Button, Container, Grid, Header, Item, List } from 'semantic-ui-react'
 
 // Components
@@ -17,7 +18,7 @@ export default class NewsSection extends React.Component {
   }
 
   render() {
-    const { news, title, subtitle, buttonLink, buttonIcon, buttonTitle} = this.props
+    const { news, title, subtitle, buttonLink, buttonIcon, buttonTitle } = this.props
     const button = buttonTitle ? (<ExternalLinkButton url={buttonLink} text={buttonTitle} icon={buttonIcon} />) : null
     const isReachedLoadLimit = this.state.loadLimit < news.length
 
@@ -58,4 +59,13 @@ export default class NewsSection extends React.Component {
       </Grid.Column>
     )
   }
+}
+
+NewsSection.propTypes = {
+  news: PropTypes.array.isRequired,
+  title: PropTypes.string.isRequired,
+  subtitle: PropTypes.string.isRequired,
+  buttonLink: PropTypes.string.isRequired,
+  buttonIcon: PropTypes.string.isRequired,
+  buttonTitle: PropTypes.string.isRequired
 }

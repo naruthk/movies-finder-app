@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom'
 
 import { Image, Grid, Header, Dimmer, Item, Button, Icon } from 'semantic-ui-react'
@@ -50,4 +51,12 @@ export default class MoviesAsGridUnit extends React.Component {
       </Grid.Column>
     )
   }
+}
+
+MoviesAsGridUnit.propTypes = {
+  id: PropTypes.number.isRequired,
+  imgUrl: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  date: PropTypes.string.isRequired
 }

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Helmet } from 'react-helmet'
-import { Accordion, Container, Header, Icon, Responsive, Segment } from 'semantic-ui-react'
+import { Accordion, Container, Header, Icon, Responsive } from 'semantic-ui-react'
 
 // Components
 import TemplateHeader from '../components/Header'
@@ -21,35 +20,18 @@ export default class Faq extends Component {
   }
 
   render() {
-    const { siteTitle, siteDescription } = config
-    const lastUpdatedDate = 'September 6, 2018'
+    const { siteFAQ, siteFAQLastModified } = config
     const { activeIndex } = this.state
 
     return (
       <Responsive>
-        <TemplateHeader>
-          <Helmet>
-            <title>FAQ - {siteTitle}</title>
-          </Helmet>
-          <Segment
-            inverted
-            textAlign='center'
-            style={{ padding: '1em 0em' }}
-            vertical
-          >
-            <Container text>
-              <Header
-                as='h1'
-                content='Movies Finder'
-                inverted
-                style={{
-                  fontSize: '4em',
-                  fontWeight: 'normal',
-                  margin: '1.5em 0em'
-                }}
-              />
-            </Container>
-          </Segment>
+        <TemplateHeader
+          pageTitle='FAQ'
+          wrapperCSS={{ padding: '1em 0em' }}
+        >
+          <Header as='h1' content='FAQ'
+            inverted style={{ fontSize: '4em', fontWeight: 'normal', margin: '1.5em 0em' }}
+          />
         </TemplateHeader>
 
         <Container style={{ padding: '3em' }}>
@@ -57,39 +39,25 @@ export default class Faq extends Component {
             as='h2'
             content='FAQ'
           />
-          <p>Last updated: {lastUpdatedDate}</p>
+          <p>Last updated: {siteFAQLastModified}</p>
           
           <Accordion fluid styled>
-            <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleClick}>
-              <Icon name='dropdown' />
-              What is {siteTitle}
-            </Accordion.Title>
-            <Accordion.Content active={activeIndex === 0}>
-              <p>{siteDescription}</p>
-            </Accordion.Content>
-            <Accordion.Title active={activeIndex === 1} index={1} onClick={this.handleClick}>
-              <Icon name='dropdown' />
-              Can I trust the information on this website?
-            </Accordion.Title>
-            <Accordion.Content active={activeIndex === 1}>
-              <p>{siteTitle} strives to bring the latest updates and information for your favorite movies and TV shows. But {siteTitle} utilizes sources from other parties like IMDB, Google News, and etc. This ultimately means that {siteTitle} is not responsible for any correct or incorrect information you may receive.</p>
-              <p>For most accurate and reliable information, {siteTitle} suggests the user to visit the publishing company's website.</p>
-            </Accordion.Content>
-            <Accordion.Title active={activeIndex === 2} index={2} onClick={this.handleClick}>
-              <Icon name='dropdown' />
-              Donation / Support
-            </Accordion.Title>
-            <Accordion.Content active={activeIndex === 2}>
-              <p>Running this project requires a bit of money on my own. By supporting this project, {siteTitle} can continue to run without ads and subscription fees. Nobody likes that.</p>
-              <p>Donation will be open soon.</p>
-            </Accordion.Content>
-            <Accordion.Title active={activeIndex === 3} index={3} onClick={this.handleClick}>
-              <Icon name='dropdown' />
-              Collaboration
-            </Accordion.Title>
-            <Accordion.Content active={activeIndex === 3}>
-              <p>If you are interested in working with me to improve and add more features to {siteTitle}, please send me an <a href="mailto:nkongurai@gmail.com">email</a> explaining who you are, your background, and why you want to work with me.</p>
-            </Accordion.Content>
+            {siteFAQ.map((item, index) => {
+              return (
+                <div>
+                  <Accordion.Title 
+                    active={activeIndex === index} 
+                    index={index}
+                    onClick={this.handleClick}>
+                    <Icon name='dropdown' /> {item.title}
+                  </Accordion.Title>
+                  <Accordion.Content 
+                    active={activeIndex === index} >
+                    <div dangerouslySetInnerHTML={{__html: item.content}}></div>
+                  </Accordion.Content>
+                </div>
+              )
+            })}
           </Accordion>
         </Container>
 

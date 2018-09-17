@@ -1,10 +1,11 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 import { Container, Grid, List, Image, Button } from 'semantic-ui-react'
 
-import authentication from '../../../utils/authentication'
-import blankPhoto from '../../../assets/images/white-image.png'
+import authentication from '../../utils/authentication'
+import blankPhoto from '../../assets/images/white-image.png'
 
-export default class MovieCastSection extends React.Component {
+export default class CastSection extends React.Component {
   
   constructor(props) {
     super(props);
@@ -48,4 +49,8 @@ export default class MovieCastSection extends React.Component {
       </Grid>
     )
   }
+}
+
+CastSection.propTypes = {
+  cast: PropTypes.array.isRequired
 }

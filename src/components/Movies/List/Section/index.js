@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 import { Button, Container, Grid, Header, Item } from 'semantic-ui-react'
 
 // Components
@@ -53,4 +54,13 @@ export default class ListOfMoviesSection extends React.Component {
       </Grid.Column>
     )
   }
+}
+
+ListOfMoviesSection.propTypes = {
+  movies: PropTypes.object.isRequired,
+  title: PropTypes.string.isRequired,
+  subtitle: PropTypes.string.isRequired,
+  buttonLink: PropTypes.string.isRequired,
+  buttonIcon: PropTypes.string.isRequired,
+  buttonTitle: PropTypes.string.isRequired
 }

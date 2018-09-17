@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import { Item, Icon } from 'semantic-ui-react'
@@ -6,7 +7,7 @@ import { Item, Icon } from 'semantic-ui-react'
 // Utilities
 import authentication from '../../../../utils/authentication'
 
-export default class TrendingMoviesUnit extends React.Component {
+export default class ListOfMoviesUnit extends React.Component {
 
   render() {
     const { id, poster_path, original_title, original_name, overview, release_date, first_air_date, vote_average, vote_count, imgSize } = this.props;
@@ -28,7 +29,7 @@ export default class TrendingMoviesUnit extends React.Component {
         </Link>
         <Item.Content>
           <Item.Header><Link to={pushToDetail}>{title}</Link></Item.Header>
-          <Item.Description>{overview}</Item.Description>
+          {overview && <Item.Description>{overview}</Item.Description>}
           <Item.Extra>
             <Icon color='orange' name='calendar' /> <span>{moment(date).format('MMMM Do YYYY')}</span>
             <Icon color='orange' name='star' /> <span><b>{vote_average}</b> / 10</span>
@@ -38,4 +39,17 @@ export default class TrendingMoviesUnit extends React.Component {
       </Item>
     )
   }
+}
+
+ListOfMoviesUnit.propTypes = {
+  id: PropTypes.string.isRequired,
+  poster_path: PropTypes.string.isRequired,
+  original_title: PropTypes.string.isRequired,
+  original_name: PropTypes.string.isRequired,
+  overview: PropTypes.string.isRequired,
+  release_date: PropTypes.string.isRequired,
+  first_air_date: PropTypes.string.isRequired,
+  vote_average: PropTypes.string.isRequired,
+  vote_count: PropTypes.string.isRequired,
+  imgSize: PropTypes.string.isRequired,
 }

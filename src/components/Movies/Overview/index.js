@@ -1,5 +1,6 @@
 import React from 'react'
-import moment from 'moment'
+import PropTypes from 'prop-types'
+import _ from 'lodash'
 import { Grid, List, Segment, Image, Icon } from 'semantic-ui-react'
 
 import authentication from '../../../utils/authentication'
@@ -9,36 +10,38 @@ export default class MovieOverviewSection extends React.Component {
 
   render() {
     const { tmdb_image_uri } = authentication
-    const result = this.props.content
+    const { details, crew } = this.props
 
-    const filteringForDirectors = result.crew ? result.crew.filter(person => person.job === "Director") : ""
-    const listOfDirectors = filteringForDirectors.map(director => director.name).join(", ")
+    const filterForDirectors = crew ? crew.filter(person => person.job === "Director") : ""
+    const listOfDirectors = filterForDirectors.map(director => director.name).join(", ")
     
-    const resultsObj = {
-      'Plot': `${result.overview}`,
-      'Genres': `${(result.genres).join(', ').toString()}`,
+    const detailsObj = {
+      'Plot': `${details.overview}`,
+      'Genres': `${_.map(details.genres, 'name').join(', ').toString()}`,
       'Directed by': `${listOfDirectors}`,
-      'Release Date': `${moment(result.release_date).format('MMMM Do YYYY')}`,
-      'Runtime': `${result.runtime} minutes`,
-      'Budget': `${helpers.shortenLargeNumber(result.budget)}`,
-      'Revenue': `${helpers.shortenLargeNumber(result.revenue)}`
+      'Release Date': `${helpers.createReadableDate(details.release_date)}`,
+      'Runtime': `${details.runtime} minutes`,
+      'Budget': `${helpers.shortenLargeNumber(details.budget)}`,
+      'Revenue': `${helpers.shortenLargeNumber(details.revenue)}`
     }
+
+    const imagePath = `${tmdb_image_uri}/${details.poster_path}`
 
     return (
       <Segment inverted>
         <Grid columns='equal' stackable>
           <Grid.Row>
             <Grid.Column>
-              <Image rounded centered src={`${tmdb_image_uri}/${result.poster}`} size="medium" />
+              <Image rounded centered src={imagePath} size="medium" />
             </Grid.Column>
             <Grid.Column>
               <List divided inverted relaxed size='large'>
-                {Object.keys(resultsObj).map(function(key, index) {
+                {Object.keys(detailsObj).map(function(key, index) {
                     return (
                       <List.Item key={index + "-detail"}>
                         <List.Content>
                           <List.Header>{key}</List.Header>
-                            {resultsObj[key]}
+                            {detailsObj[key]}
                         </List.Content>
                       </List.Item>
                     )}
@@ -46,7 +49,7 @@ export default class MovieOverviewSection extends React.Component {
                 <List.Item>
                   <List.Content>
                     <List.Header>Votes</List.Header>
-                      <Icon color='orange' name='star' /> <span><strong>{result.vote_average}</strong> / 10</span> ({result.vote_count} Votes)
+                      <Icon color='orange' name='star' /> <span><strong>{details.vote_average}</strong> / 10</span> ({details.vote_count} Votes)
                   </List.Content>
                 </List.Item>
               </List>
@@ -56,4 +59,9 @@ export default class MovieOverviewSection extends React.Component {
       </Segment>
     )
   }
+}
+
+MovieOverviewSection.propTypes = {
+  details: PropTypes.object.isRequired,
+  crew: PropTypes.array.isRequired
 }
