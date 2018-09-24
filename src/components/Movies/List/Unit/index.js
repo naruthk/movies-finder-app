@@ -22,9 +22,9 @@ export default class ListOfMoviesUnit extends React.Component {
       <Item>
         <Link to={pushToDetail}>
           <Item.Image 
-            size={imgSize ? imgSize : 'tiny'}
+            size='tiny'
             src={`${tmdb_image_uri}/${poster_path}`} 
-            style={{margin: '0 10px 0 0'}}
+            style={{margin: '0 10px 10px 0'}}
           />
         </Link>
         <Item.Content>
@@ -42,14 +42,21 @@ export default class ListOfMoviesUnit extends React.Component {
 }
 
 ListOfMoviesUnit.propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   poster_path: PropTypes.string.isRequired,
   original_title: PropTypes.string.isRequired,
   original_name: PropTypes.string.isRequired,
   overview: PropTypes.string.isRequired,
   release_date: PropTypes.string.isRequired,
   first_air_date: PropTypes.string.isRequired,
-  vote_average: PropTypes.string.isRequired,
-  vote_count: PropTypes.string.isRequired,
-  imgSize: PropTypes.string.isRequired,
+  vote_average: PropTypes.number.isRequired,
+  vote_count: PropTypes.number.isRequired,
+  imgSize: PropTypes.oneOf(['tiny', 'small', 'medium', 'big']),
+}
+
+ListOfMoviesUnit.defaultProps = {
+  original_title: '',
+  original_name: '',
+  first_air_date: '',
+  imgSize: 'small'
 }

@@ -1,18 +1,14 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import axios from 'axios'
-import { Container, Header, Responsive, Modal, Grid, Button, Embed } from 'semantic-ui-react'
-
-// Components
-import TemplateHeader from '../components/Header'
-import TemplateFooter from '../components/Footer'
-import SectionMovieOverview from '../components/Movies/Overview'
-import SectionCast from '../components/Cast'
-import SectionCrew from '../components/Crew'
-import SectionNews from '../components/News/Section'
+import { Container, Tab, Grid } from 'semantic-ui-react'
+import Layout from '../layouts/main'
+import TopTitle from '../components/TopTitle/'
+import SectionOverview from '../components/Movies/Overview'
+import SectionCast from '../components/Cast/Section/'
+import SectionCrew from '../components/Crew/Section/'
+import SectionNews from '../components/News/Section/'
 import NotFound from '../pages/NotFound'
 
-// Utilties
 import authentication from '../utils/authentication'
 
 export default class Details extends Component {
@@ -34,11 +30,12 @@ export default class Details extends Component {
   }
   
   componentDidMount() {
-    const { tmdb_api_key, tmdb_default_uri } = authentication
+    const { TMDB_API_KEY } = authentication
     const movieId = this.props.match.params.movieid
-    const MOVIE_DETAILS_ENDPOINT = `${tmdb_default_uri}/movie/${movieId}?api_key=${tmdb_api_key}&language=en-US`
-    const CAST_CREW_ENDPOINT = `${tmdb_default_uri}/movie/${movieId}/credits?api_key=${tmdb_api_key}&language=en-US`
-    const VIDEOS_RELATED_TO_MOVIE_ENDPOINT = `${tmdb_default_uri}/movie/${movieId}/videos?api_key=${tmdb_api_key}&language=en-US`
+    const tmdb_uri = 'https://api.themoviedb.org/3'
+    const MOVIE_DETAILS_ENDPOINT = `${tmdb_uri}/movie/${movieId}?api_key=${TMDB_API_KEY}&language=en-US`
+    const CAST_CREW_ENDPOINT = `${tmdb_uri}/movie/${movieId}/credits?api_key=${TMDB_API_KEY}&language=en-US`
+    const VIDEOS_RELATED_TO_MOVIE_ENDPOINT = `${tmdb_uri}/movie/${movieId}/videos?api_key=${TMDB_API_KEY}&language=en-US`
 
     this.fetchMovieDetailsAndNews(MOVIE_DETAILS_ENDPOINT)
     this.fetchCastCrew(CAST_CREW_ENDPOINT)
@@ -88,73 +85,44 @@ export default class Details extends Component {
   
   render() {
     const { details, videos, cast, crew, news, movieNotFound } = this.state
+    const panes = [
+      { 
+        menuItem: { key: 'cast', icon: 'users', content: 'Cast' },
+        render: () => <Tab.Pane><SectionCast cast={cast} /></Tab.Pane> 
+      },
+      { 
+        menuItem: { key: 'crew', icon: 'users', content: 'Crew' },
+        render: () => <Tab.Pane><SectionCrew crew={crew} /></Tab.Pane> 
+      },
+      { 
+        menuItem: { key: 'news', icon: 'newspaper', content: 'News' },
+        render: () => <Tab.Pane><SectionNews news={news} buttonTitle="Read more on Google News" buttonIcon='google' buttonHref="https://news.google.com/" /></Tab.Pane>
+      }
+    ]
     
-    return (
-      (!movieNotFound ? (
+    return (movieNotFound ? ( <NotFound movieId={this.state.id}/> ) : (
+      <Layout title={details.title}>
+        <TopTitle title={details.title}></TopTitle> 
 
-        <Responsive>
+        <Container>
+          <Grid columns='equal' stackable>
+            <Grid.Row>
 
-          <TemplateHeader pageTitle={details.title} >
-            <Header as='h1' content={details.title} inverted style={{ fontSize: '4em', fontWeight: 'normal', margin: '1.5em 0 0.5em 0em' }} />
-          </TemplateHeader>
+              <SectionOverview 
+                details={details}
+                crew={crew}
+                videos={videos}
+                headerTitle='Overview'
+                headerSubtitle={`Get all the details about ${details.title}`} />
+              
+              <Grid.Column style={{ padding: '3em' }}>
+                <Tab panes={panes} />
+              </Grid.Column>
 
-          <Container>
-            <Grid columns='equal' stackable>
-              <Grid.Row>
-                <Grid.Column style={{ padding: '3em' }}>
-                  <Grid divided='vertically'>
-                    <Grid.Row columns={2}>
-                      <Grid.Column>
-                      <Header
-                        as='h2'
-                        content='Overview'
-                        subheader={`Get all the details about ${details.title}`} />
-                      </Grid.Column>
-                      <Grid.Column textAlign='right'>
-                        {videos.length > 0 && (
-                          <Modal trigger={<Button>Play Trailer</Button>} closeIcon basic>
-                            <Modal.Header>{details.title} - Trailer</Modal.Header>
-                            <Modal.Content>
-                              <Embed id={videos[0].key}  placeholder={`https://img.youtube.com/vi/${videos[0].key}/0.jpg`} source='youtube' />
-                            </Modal.Content>
-                          </Modal>
-                        )}
-                      </Grid.Column>
-                    </Grid.Row>
-                  </Grid>
-                
-                  <SectionMovieOverview details={details} crew={crew} />
-
-                  <Header as='h2' content='Cast' />
-
-                  <SectionCast cast={cast} />
-
-                  <Header as='h2' content='Crew' />
-
-                  <SectionCrew crew={crew} />
-
-                </Grid.Column>
-
-                <Grid.Column style={{ padding: '3em' }}>
-                  <SectionNews 
-                    title='Media'
-                    subtitle={`All the buzz around ${details.title}`}
-                    news={news} />
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-          </Container>
-
-          <TemplateFooter />
-          
-        </Responsive>
-      ) : (
-        <NotFound movieId={this.state.id}/>
-      ))
-    );
+            </Grid.Row>
+          </Grid>
+        </Container>
+      </Layout>
+    ))
   }
-}
-
-Details.propTypes = {
-  id: PropTypes.number.isRequired
 }

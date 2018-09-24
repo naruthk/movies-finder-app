@@ -2,11 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import { Segment, Container} from 'semantic-ui-react'
 
-const Banner = props => (
+const Banner = (props) => (
   <Segment
-    inverted
+    inverted={props.inverted}
     vertical
-    textAlign='center'
+    textAlign={props.textAlign}
     style={props.css} >
     <Container>{props.text}</Container>
   </Segment>
@@ -15,6 +15,12 @@ const Banner = props => (
 export default Banner
 
 Banner.propTypes = {
-  css: PropTypes.object,
-  text: PropTypes.string
+  inverted: PropTypes.bool,
+  text: PropTypes.object.isRequired,
+  css: PropTypes.object
+}
+
+Banner.defaultProps = {
+  inverted: true,
+  text: ''
 }

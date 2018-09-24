@@ -1,38 +1,46 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import { Header, Grid, List, Segment, Image, Icon } from 'semantic-ui-react'
 import _ from 'lodash'
-import { Grid, List, Segment, Image, Icon } from 'semantic-ui-react'
-
-import authentication from '../../../utils/authentication'
+import ModalVideo from '../../Modal/Video'
 import helpers from '../../../utils/helpers'
 
-export default class MovieOverviewSection extends React.Component {
+const filterForDirectors = (data) => data ? data.filter(person => person.job === "Director") : ""
 
-  render() {
-    const { tmdb_image_uri } = authentication
-    const { details, crew } = this.props
+const MovieOverviewSection = (props) => {
+  const { details, crew } = props
+  const listOfDirectors = filterForDirectors(crew).map(director => director.name).join(", ")
+  const IMAGE_PATH = `https://image.tmdb.org/t/p/w500/${details.poster_path}`
+  const detailsObj = {
+    'Plot': `${details.overview}`,
+    'Genres': `${_.map(details.genres, 'name').join(', ').toString()}`,
+    'Directed by': `${listOfDirectors}`,
+    'Release Date': `${helpers.createReadableDate(details.release_date)}`,
+    'Runtime': `${details.runtime} minutes`,
+    'Budget': `${helpers.shortenLargeNumber(details.budget)}`,
+    'Revenue': `${helpers.shortenLargeNumber(details.revenue)}`
+  }
 
-    const filterForDirectors = crew ? crew.filter(person => person.job === "Director") : ""
-    const listOfDirectors = filterForDirectors.map(director => director.name).join(", ")
-    
-    const detailsObj = {
-      'Plot': `${details.overview}`,
-      'Genres': `${_.map(details.genres, 'name').join(', ').toString()}`,
-      'Directed by': `${listOfDirectors}`,
-      'Release Date': `${helpers.createReadableDate(details.release_date)}`,
-      'Runtime': `${details.runtime} minutes`,
-      'Budget': `${helpers.shortenLargeNumber(details.budget)}`,
-      'Revenue': `${helpers.shortenLargeNumber(details.revenue)}`
-    }
+  return (
+    <Grid.Column style={{ padding: '3em' }}>
+      <Grid divided='vertically'>
+        <Grid.Row columns={2}>
+          <Grid.Column>
+          <Header
+            as='h2'
+            content='Overview'
+            subheader={`Get all the details about ${props.details.title}`} />
+          </Grid.Column>
+          <Grid.Column textAlign='right'>
+            {props.videos.length !== 0 && (<ModalVideo modalTitle="Play Trailer" details={props.details} videos={props.videos} />)}
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
 
-    const imagePath = `${tmdb_image_uri}/${details.poster_path}`
-
-    return (
       <Segment inverted>
         <Grid columns='equal' stackable>
           <Grid.Row>
             <Grid.Column>
-              <Image rounded centered src={imagePath} size="medium" />
+              <Image rounded centered src={IMAGE_PATH} size="medium" />
             </Grid.Column>
             <Grid.Column>
               <List divided inverted relaxed size='large'>
@@ -49,7 +57,7 @@ export default class MovieOverviewSection extends React.Component {
                 <List.Item>
                   <List.Content>
                     <List.Header>Votes</List.Header>
-                      <Icon color='orange' name='star' /> <span><strong>{details.vote_average}</strong> / 10</span> ({details.vote_count} Votes)
+                      <Icon color='orange' name='star' /> <span><strong>{props.details.vote_average}</strong> / 10</span> ({props.details.vote_count} Votes)
                   </List.Content>
                 </List.Item>
               </List>
@@ -57,11 +65,9 @@ export default class MovieOverviewSection extends React.Component {
           </Grid.Row>
         </Grid>
       </Segment>
-    )
-  }
+
+    </Grid.Column>
+  )
 }
 
-MovieOverviewSection.propTypes = {
-  details: PropTypes.object.isRequired,
-  crew: PropTypes.array.isRequired
-}
+export default MovieOverviewSection

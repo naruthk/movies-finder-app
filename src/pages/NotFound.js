@@ -1,32 +1,19 @@
 import React from 'react'
-import { Container, Header, Responsive } from 'semantic-ui-react'
+import { Container, Header } from 'semantic-ui-react'
+import Layout from '../layouts/main'
+import TopTitle from '../components/TopTitle/'
 
-// Components
-import TemplateHeader from '../components/Header'
-import TemplateFooter from '../components/Footer'
+const title = `Page not found`
 
-const NotFound = (props) => {
-  // const movieId = props.movieId
-  return (
-    <Responsive>
-      <TemplateHeader
-        pageTitle='Not Found'
-        wrapperCSS={{ padding: '1em 0em' }}
-      >
-        <Header 
-          as='h1'
-          content='Not Found'
-          inverted style={{ fontSize: '4em', fontWeight: 'normal', margin: '1.5em 0em' }} />
-      </TemplateHeader>
+const description = (`<div><p style={{fontSize: '1.2rem'}}>We were unable to find information for this particular content.</p>
+<p style={{fontSize: '1.2rem'}}>Please contact the <a href='mailto:nkongurai@gmail.com'>administrator</a>.</p></div>`)
 
-      <Container style={{ padding: '3em' }}>
-        <Header as='h2' content='Unable to lookup content' />
-        <p style={{fontSize: '1.2rem'}}>We were unable to find information for this particular content.</p>
-        <p style={{fontSize: '1.2rem'}}>Please contact the <a href='mailto:nkongurai@gmail.com'>administrator</a>.</p>
-      </Container>
-      <TemplateFooter />
-    </Responsive>
-  )
-}
-
-export default NotFound
+export default () => (
+  <Layout title={title}>
+    <TopTitle title={title}></TopTitle> 
+    <Container style={{ padding: '3em' }}>
+      <Header as='h2' content='Unable to lookup content' />
+      <div dangerouslySetInnerHTML={{__html: description}}></div>
+    </Container>
+  </Layout>
+)

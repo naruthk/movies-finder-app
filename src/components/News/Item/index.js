@@ -35,9 +35,9 @@ export default class NewsUnit extends React.Component {
 }
 
 NewsUnit.propTypes = {
-  urlToImage: PropTypes.string.isRequired,
+  urlToImage: PropTypes.string,
   title: PropTypes.string.isRequired,
   url: PropTypes.string.isRequired,
   publishedAt: PropTypes.string.isRequired,
-  source: PropTypes.string.isRequired
+  source: PropTypes.object.isRequired
 }

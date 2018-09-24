@@ -1,0 +1,84 @@
+{
+  "config": {
+    "title": "Movies Lookup Website",
+    "description": "My awesome app using docz",
+    "themeConfig": {},
+    "ordering": "descending",
+    "version": "1.0.0",
+    "repository": null,
+    "native": false
+  },
+  "entries": {
+    "src/index.mdx": {
+      "name": "Welcome",
+      "route": "/",
+      "id": "6576455a124f9aaefd860597f03a8fe4",
+      "filepath": "src/index.mdx",
+      "link": null,
+      "slug": "src-index",
+      "order": 0,
+      "menu": null,
+      "headings": [
+        {
+          "depth": 1,
+          "slug": "welcome",
+          "value": "Welcome"
+        },
+        {
+          "depth": 2,
+          "slug": "architecture",
+          "value": "Architecture"
+        }
+      ]
+    },
+    "src/components/Banner/index.mdx": {
+      "name": "Banner",
+      "menu": "Components",
+      "id": "f2a2ef170122dcedf5b8eedbe04055e1",
+      "filepath": "src/components/Banner/index.mdx",
+      "link": null,
+      "slug": "src-components-banner-index",
+      "route": "/src-components-banner-index",
+      "order": 0,
+      "headings": [
+        {
+          "depth": 1,
+          "slug": "banner",
+          "value": "Banner"
+        },
+        {
+          "depth": 2,
+          "slug": "basic-usage",
+          "value": "Basic usage"
+        },
+        {
+          "depth": 2,
+          "slug": "customization",
+          "value": "Customization"
+        }
+      ]
+    },
+    "src/components/Button/ExternalLinkButton/index.mdx": {
+      "name": "Button",
+      "menu": "Components",
+      "id": "136b15c626ba031de919b96426565649",
+      "filepath": "src/components/Button/ExternalLinkButton/index.mdx",
+      "link": null,
+      "slug": "src-components-button-external-link-button-index",
+      "route": "/src-components-button-external-link-button-index",
+      "order": 0,
+      "headings": [
+        {
+          "depth": 1,
+          "slug": "banner",
+          "value": "Banner"
+        },
+        {
+          "depth": 2,
+          "slug": "basic-usage",
+          "value": "Basic usage"
+        }
+      ]
+    }
+  }
+}

@@ -1,18 +1,14 @@
 import React from 'react'
 import { Container, Menu } from 'semantic-ui-react'
-
-// Components
 import SearchInput from '../Search/AutocompleteSearch'
-
-// Utilities
 import config from '../../utils/config'
 
-const { menu } = config
+const { site } = config
 
-const TemplateMenu = () => (
+export default () => (
   <Menu fixed='top'>
     <Container>
-      {menu.map((item) => {
+      {site.navigation.map((item) => {
         return <Menu.Item key={item.name} as='a' href={item.path}>{item.name}</Menu.Item>
       })}
       <Menu.Menu position='right'>
@@ -23,5 +19,3 @@ const TemplateMenu = () => (
     </Container>
   </Menu>
 )
-
-export default TemplateMenu

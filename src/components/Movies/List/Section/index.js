@@ -9,7 +9,7 @@ import ExternalLinkButton from '../../../Button/ExternalLinkButton'
 export default class ListOfMoviesSection extends React.Component {
 
   state = {
-    loadLimit: 5
+    loadLimit: 4
   }
   
   handleClick = (e) => {
@@ -24,18 +24,11 @@ export default class ListOfMoviesSection extends React.Component {
 
     return (
       <Grid.Column>
-        <Grid divided='vertically'>
-          <Grid.Row columns={2}>
-            <Grid.Column>
-              <Header
-                as='h2'
-                content={title}
-                subheader={subtitle}
-              />
-            </Grid.Column>
-            <Grid.Column textAlign='right'>{button}</Grid.Column>
-          </Grid.Row>
-        </Grid>
+        <Header
+          as='h2'
+          content={title}
+          subheader={subtitle}
+        />
         <Item.Group>
           {movies.slice(0, this.state.loadLimit).map((movie, index) => {
             return (
@@ -46,9 +39,9 @@ export default class ListOfMoviesSection extends React.Component {
             )
           })}
           {isReachedLoadLimit ? (
-            <Button attached='bottom' onClick={this.handleClick}>View more</Button>
+            <Button primary attached='bottom' onClick={this.handleClick}>View more</Button>
           ) : (
-            <Container textAlign='center' style={{padding: '1.2rem'}}>{button}</Container>
+            <Container primary textAlign='center' style={{padding: '1.2rem'}}>{button}</Container>
           )}
         </Item.Group>
       </Grid.Column>
@@ -57,7 +50,7 @@ export default class ListOfMoviesSection extends React.Component {
 }
 
 ListOfMoviesSection.propTypes = {
-  movies: PropTypes.object.isRequired,
+  movies: PropTypes.array.isRequired,
   title: PropTypes.string.isRequired,
   subtitle: PropTypes.string.isRequired,
   buttonLink: PropTypes.string.isRequired,

@@ -1,42 +1,44 @@
 import React from 'react'
-import {
-  Container,
-  Grid,
-  Header,
-  List,
-  Segment,
-} from 'semantic-ui-react'
+import { Container, Grid, Header, List, Segment } from 'semantic-ui-react'
+import config from '../../utils/config'
 
-import config from '../../utils/config';
+const { metaData } = config
 
-const { siteTitle, siteDescription, author, authorUrl, copyright } = config
+const disclaimerInformation = `All contents are provided by non-affiliated third parties.`
 
-const Footer = () => (
-  <Segment inverted vertical 
-    style={{ padding: '5em 0em', margin: '50px 0 0 0'}} >
+const dataSources = [
+  {
+    name: 'The Movie Database (TMDb)',
+    href: 'https://www.themoviedb.org/'
+  },
+  {
+    name: 'News API',
+    href: 'https://www.newsapi.org'
+  }
+]
+
+export default () => (
+  <Segment inverted vertical style={{ padding: '5em 0', margin: '50px 0 0 0' }}>
     <Container>
       <Grid divided inverted stackable>
         <Grid.Row>
           <Grid.Column width={7}>
             <Header inverted as='h4' content='Disclaimer' />
-            <p>{siteDescription}</p>
-            <p>All contents are provided by non-affiliated third parties.</p>
+            <p>{metaData.description}</p>
+            <p>{disclaimerInformation}</p>
           </Grid.Column>
           <Grid.Column width={3}>
             <Header inverted as='h4' content='Data Sources' />
             <List link inverted>
-              <List.Item as='a' href="https://www.themoviedb.org/">The Movie Database (TMDb)</List.Item>
-              <List.Item as='a' href="https://www.newsapi.org">News API</List.Item>
+              {dataSources.map((item, index) => <List.Item key={index} as='a' href={item.href}>{item.name}</List.Item>)}
             </List>
           </Grid.Column>
           <Grid.Column width={3}>
-            <Header as='h4' inverted>{copyright} | {siteTitle}</Header>
-            <p>Developed by <a href={authorUrl}>{author}</a></p>
+            <Header as='h4' inverted>Copyrighted 2018</Header>
+            <p>Project developed and maintained by <a href="https://www.naruthk.com" target="_blank" rel="noopener noreferrer">Naruth Kongurai</a></p>
           </Grid.Column>
         </Grid.Row>
       </Grid>
     </Container>
   </Segment>
 )
-
-export default Footer

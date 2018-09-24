@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom'
+import LazyLoad from 'react-lazyload';
 
 import { Image, Grid, Header, Dimmer, Item, Button, Icon } from 'semantic-ui-react'
 
@@ -23,32 +24,34 @@ export default class MoviesAsGridUnit extends React.Component {
 
     const content = (
       <div>
-        <Header as='h2' inverted style={{ margin: '0 0 10px 0'}}>{title}</Header>
-        <p style={{ fontSize: '1rem' }}>{description.substr(0,100) + '...'}</p>
-          <Button icon labelPosition='right'>Info<Icon name='right arrow' /></Button>
+        <Header as='h3' inverted style={{ margin: '0 0 10px 0'}}>{title}</Header>
+        <p style={{ fontSize: '1rem' }}>{description.substr(0,80) + '...'}</p>
+          <Button primary icon labelPosition='right'>Info<Icon name='right arrow' /></Button>
       </div>
     )
 
     return (
-      <Grid.Column textAlign='center'>
-        <Link to={pushToDetail}>
-          <Dimmer.Dimmable
-            as={Image}
-            dimmed={active}
-            dimmer={{ active, content }}
-            onMouseEnter={this.handleShow}
-            onMouseLeave={this.handleHide}
-            src={`${tmdb_image_uri}/${imgUrl}`}
-          />
-        </Link>
-        <Item>
-          <Item.Content>
-            <Item.Meta>
-              <span>{date}</span>
-            </Item.Meta>
-          </Item.Content>
-        </Item>
-      </Grid.Column>
+      <LazyLoad height={200}>
+        <Grid.Column textAlign='center' mobile={5} tablet={2} computer={2}>
+          <Link to={pushToDetail}>
+            <Dimmer.Dimmable
+              as={Image}
+              dimmed={active}
+              dimmer={{ active, content }}
+              onMouseEnter={this.handleShow}
+              onMouseLeave={this.handleHide}
+              src={`${tmdb_image_uri}/${imgUrl}`}
+            />
+          </Link>
+          <Item>
+            <Item.Content>
+              <Item.Meta>
+                <span style={{color: 'white'}}>{date}</span>
+              </Item.Meta>
+            </Item.Content>
+          </Item>
+        </Grid.Column>
+      </LazyLoad>
     )
   }
 }

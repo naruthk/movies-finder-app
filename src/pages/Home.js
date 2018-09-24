@@ -1,17 +1,10 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import { Container, Grid, Responsive, Segment } from 'semantic-ui-react'
-
-// Components
-import Banner from '../components/Banner'
+import { Container, Grid, Segment } from 'semantic-ui-react'
+import Page from '../layouts/main'
 import SectionNowPlaying from '../components/Movies/Grid/Section'
 import SectionTrending from '../components/Movies/List/Section'
 import SectionNews from '../components/News/Section'
-import TemplateHeader from '../components/Header'
-import TemplateFooter from '../components/Footer'
-
-// Utilities
-import config from '../utils/config'
 import authentication from '../utils/authentication'
 
 export default class Home extends Component {
@@ -29,14 +22,10 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
-    const { 
-      tmdb_api_key, 
-      tmdb_default_uri, 
-      newsapi_api_key, 
-      newsapi_default_uri } = authentication
-    const NOW_PLAYING_ENDPOINT = `${tmdb_default_uri}/movie/now_playing?api_key=${tmdb_api_key}`
-    const TRENDING_MOVIES_ENDPOINT = `${tmdb_default_uri}/trending/all/week?api_key=${tmdb_api_key}`
-    const NEWS_ENDPOINT = `${newsapi_default_uri}/top-headlines?country=us&category=entertainment&apiKey=${newsapi_api_key}`
+    const { TMDB_API_KEY, NEWSAPI_API_KEY } = authentication
+    const NOW_PLAYING_ENDPOINT = `https://api.themoviedb.org/3/movie/now_playing?api_key=${TMDB_API_KEY}`
+    const TRENDING_MOVIES_ENDPOINT = `https://api.themoviedb.org/3/trending/all/week?api_key=${TMDB_API_KEY}`
+    const NEWS_ENDPOINT = `https://newsapi.org/v2/top-headlines?country=us&category=entertainment&apiKey=${NEWSAPI_API_KEY}`
     
     this.fetchNowPlaying(NOW_PLAYING_ENDPOINT)
     this.fetchTrendingMoviesThisWeek(TRENDING_MOVIES_ENDPOINT)
@@ -66,21 +55,13 @@ export default class Home extends Component {
   
   render() {
     return (
-      <Responsive>
-        <TemplateHeader
-          pageTitle={config.siteTitle}
-          wrapperCSS={{ padding: '10px 0' }}
-          childCSS={{}} >
-        </TemplateHeader>
+      <Page>
 
         <SectionNowPlaying 
           title='Currently in Theaters'
-          subtitle='Movies currently on show this week'
-          movies={this.state.moviesInTheaters} />
-        
-        <Banner 
-          css={{ padding: '1em 0em', margin: '2em 0' }}
-          text={<div><p>{config.siteTitle} strives to bring you all the latest news and updates for your favorite movies and TV shows.</p><p>Bookmark this site for easy access!</p></div>} />
+          subtitle='Movies currently on show'
+          movies={this.state.moviesInTheaters} 
+          authentication={authentication} />
         
         <Container>
           <Segment vertical>
@@ -105,9 +86,7 @@ export default class Home extends Component {
           </Segment>
         </Container>
 
-        <TemplateFooter />
-        
-      </Responsive>
+      </Page>
     );
   }
 }

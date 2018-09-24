@@ -1,10 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types';
-import { Button, Container, Grid, Header, Item, List } from 'semantic-ui-react'
-
-// Components
-import NewsUnit from '../Unit'
+import { Header, Button, Container, Grid, Item, List } from 'semantic-ui-react'
 import ExternalLinkButton from '../../Button/ExternalLinkButton'
+import NewsItem from '../Item'
 
 export default class NewsSection extends React.Component {
 
@@ -18,41 +16,23 @@ export default class NewsSection extends React.Component {
   }
 
   render() {
-    const { news, title, subtitle, buttonLink, buttonIcon, buttonTitle } = this.props
-    const button = buttonTitle ? (<ExternalLinkButton url={buttonLink} text={buttonTitle} icon={buttonIcon} />) : null
+    const { news, buttonHref, buttonIcon, buttonTitle } = this.props
+    const button = buttonTitle ? (<ExternalLinkButton url={buttonHref} text={buttonTitle} icon={buttonIcon} />) : null
     const isReachedLoadLimit = this.state.loadLimit < news.length
 
     return (
       <Grid.Column>
-        <Grid divided='vertically'>
-          <Grid.Row columns={2}>
-            <Grid.Column>
-              <Header 
-                as='h2'
-                content={title}
-                subheader={subtitle}
-              />
-            </Grid.Column>
-            <Grid.Column textAlign='right'>{button}</Grid.Column>
-          </Grid.Row>
-        </Grid>
-
+        <Header
+          as='h2'
+          content={this.props.title}
+          subheader={this.props.subtitle}
+        />
         <Item.Group link>
           <List divided verticalAlign='middle'>
-            {news.slice(0, this.state.loadLimit).map((news, index) => {
-              return (
-                <NewsUnit
-                  key={index + `-item`}
-                  {...news}
-                />
-              )
-            })}
 
-            {isReachedLoadLimit ? (
-              <Button attached='bottom' onClick={this.handleClick}>View more</Button>
-            ) : (
-              <Container textAlign='center' style={{padding: '1.2rem'}}>{button}</Container>
-            )}
+            {news.slice(0, this.state.loadLimit).map((news, index) => <NewsItem key={index + `-item`} {...news} />)}
+
+            {isReachedLoadLimit ? (<Button attached='bottom' onClick={this.handleClick}>View more</Button>) : (<Container textAlign='center' style={{padding: '1.2rem'}}>{button}</Container>)}
 
           </List>
         </Item.Group>
@@ -63,9 +43,7 @@ export default class NewsSection extends React.Component {
 
 NewsSection.propTypes = {
   news: PropTypes.array.isRequired,
-  title: PropTypes.string.isRequired,
-  subtitle: PropTypes.string.isRequired,
-  buttonLink: PropTypes.string.isRequired,
-  buttonIcon: PropTypes.string.isRequired,
-  buttonTitle: PropTypes.string.isRequired
+  buttonLink: PropTypes.string,
+  buttonIcon: PropTypes.string,
+  buttonTitle: PropTypes.string
 }
